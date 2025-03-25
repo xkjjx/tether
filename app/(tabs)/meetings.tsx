@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedScrollView } from "@/components/ThemedScrollView";
 import { Meeting } from "@/models/models"
+import { StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 export default function UpcomingScreen() {
     const db = useSQLiteContext();
@@ -18,12 +20,39 @@ export default function UpcomingScreen() {
     })
 
     return (
-        <ThemedScrollView contentContainerStyle={{alignItems: 'center', marginTop: 300}}>
+        <ThemedScrollView contentContainerStyle={styles.container}>
+            <ThemedText style={styles.header}>
+                Meetings
+            </ThemedText>
             {meetings.map((item, index) => (
-                <ThemedText key={index}>
+                <ThemedText key={index} style={styles.item}>
                     {item.name}
                 </ThemedText>
             ))}
         </ThemedScrollView>
     )
 }
+
+const styles = StyleSheet.create(
+    {
+        container: {
+            paddingTop: Constants.statusBarHeight,
+            flex: 1
+        },
+        header: {
+            fontSize: 50,
+            margin: 10,
+            height: 60,
+            paddingVertical: 30,
+            textAlign: "center",
+        },
+        item: {
+            fontSize: 25,
+            margin: 10,
+            borderStyle: "solid",
+            borderWidth: 1,
+            borderRadius: 10,
+            padding: 20,
+        }
+    }
+)
