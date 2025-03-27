@@ -1,34 +1,17 @@
 import { Meeting} from "@/models/models";
-import {useSQLiteContext, SQLiteDatabase} from "expo-sqlite";
 import {ThemedText} from "@/components/ThemedText";
 import {StyleSheet, View, Modal} from "react-native";
 import {Pressable} from "expo-router/build/views/Pressable";
 import { useState } from "react";
+import NewMeetingModal from "@/components/NewMeetingModal";
 
 type MeetingCardProps = {
     meeting: Meeting;
 };
 
 export default function MeetingCard({ meeting }: MeetingCardProps, key: number) {
-    const db: SQLiteDatabase = useSQLiteContext();
     const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const escapeString = (str: string): string => {
-        return str.replace(/'/g, "''");
-    };
-
-    async function addMeetingNotes(meetingId: number, notes: string): Promise<void> {
-
-        const escapedNotes = escapeString(notes);
-
-        const query = `
-            UPDATE meeting
-            SET notes = '${escapedNotes}'
-            WHERE meeting_id = ${meetingId}
-        `;
-
-        await db.execAsync(query);
-    }
+    const modalProps = {isModalVisible, setIsModalVisible};
 
     return (
         <View key={key} style={styles.container}>
@@ -40,8 +23,7 @@ export default function MeetingCard({ meeting }: MeetingCardProps, key: number) 
                     +
                 </ThemedText>
             </Pressable>
-            <Modal visible={isModalVisible} animationType={"slide"}>
-            </Modal>
+            <NewMeetingModal {...modalProps}/>
         </View>
     )
 }
