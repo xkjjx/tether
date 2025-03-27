@@ -5,6 +5,7 @@ import { ThemedScrollView } from "@/components/ThemedScrollView";
 import { Meeting } from "@/models/models"
 import { StyleSheet } from "react-native";
 import Constants from "expo-constants";
+import MeetingCard from "@/components/MeetingCard";
 
 export default function UpcomingScreen() {
     const db = useSQLiteContext();
@@ -24,11 +25,11 @@ export default function UpcomingScreen() {
             <ThemedText style={styles.header}>
                 Meetings
             </ThemedText>
-            {meetings.map((item, index) => (
-                <ThemedText key={index} style={styles.item}>
-                    {item.name}
-                </ThemedText>
-            ))}
+            {
+                meetings.map((item, index) => (
+                    <MeetingCard meeting={item} key={index}/>
+                ))
+            }
         </ThemedScrollView>
     )
 }
@@ -45,14 +46,6 @@ const styles = StyleSheet.create(
             height: 60,
             paddingVertical: 30,
             textAlign: "center",
-        },
-        item: {
-            fontSize: 25,
-            margin: 10,
-            borderStyle: "solid",
-            borderWidth: 1,
-            borderRadius: 10,
-            padding: 20,
         }
     }
 )
